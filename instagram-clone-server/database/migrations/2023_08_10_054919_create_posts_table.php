@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->text('image_url')->after('id');
-            $table->integer('number_of_likes')->after('image_url');
+        Schema::create('posts', function (Blueprint $table) {
+            $table->id();
+            $table->Integer('user_id');
+            $table->Text('image');
+            $table->Integer('number_of_likes');
+        
+            $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('posts');
     }
 };

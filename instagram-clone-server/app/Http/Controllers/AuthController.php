@@ -53,17 +53,23 @@ class AuthController extends Controller
             'last_name' => 'required|string|max:255',
             'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:6',
+            'picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
+
+         // Store the uploaded file
+         $file = $request->file('picture');
+         $path = $file->store('uploads/profiles'); // Choose the desired storage path
 
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'username' => $request->username,
             'email' => $request->email,
-            'picture' => $request->picture,
+            'picture' => $path,
             'password' => Hash::make($request->password),
         ]);
+
 
         $token = Auth::login($user);
         return response()->json([
